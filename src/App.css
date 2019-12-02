@@ -1,0 +1,10 @@
+.App {
+  text-align: center;
+}
+
+.center {
+  margin: auto;
+  width: 60%;
+  border: 3px,black;
+  padding: 10px;
+}

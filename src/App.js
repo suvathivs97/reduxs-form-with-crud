@@ -5,6 +5,7 @@ import { Layout, Menu, Breadcrumb,Modal,Button } from 'antd';
 import { BrowserRouter as Router } from 'react-router-dom';
 import Create from './Create';
 import Index1 from './Index1';
+import TableRow from './TableRow';
 
 import './App.css';
 
@@ -65,7 +66,8 @@ class App extends React.Component {
                    </Modal>               
                 </Breadcrumb>
               <div style={{ background: '#fff', padding: 24, minHeight: 280,marginTop:"30px" }}>Content
-              <Index1  cancelfun={this.cancelfun}/></div>
+               <Index1  cancelfun={this.cancelfun}/>
+              </div>
             </Content>
             <Footer style={{ textAlign: 'center' }}>Ant Design ©2018 Created by Ant UED</Footer>
           </Layout>

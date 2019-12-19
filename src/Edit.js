@@ -2,9 +2,11 @@ import React, { Component } from 'react';
 import Index1 from './Index1';
 import axios from 'axios';
 import { Form, Input,Radio,Button,Modal } from 'antd';
+import {loginAction,UpdateAction,DisplayData} from './action/data_act';
+import {connect} from 'react-redux'
 
 const { TextArea } = Input;
-export default class Edit extends Component {
+ class Edit extends Component {
     constructor(props){
         super (props);
         this.onChangeName=this.onChangeName.bind(this);
@@ -20,16 +22,17 @@ export default class Edit extends Component {
           Gender:'',
           PhoneNumber:'',
           Address:'',
-          visible:true
+          visible:true,
+          id:''
         }
       }
       
 
       componentDidMount=async()=> {
-        console.log(this.props.item,"this")
-        const {Name,Age,Gender,PhoneNumber,Address} = this.props.item
-        await this.setState({Name,Age,Gender,PhoneNumber,Address})
-      
+        console.log(this.props.item,"this is item ")
+        const {Name,Age,Gender,PhoneNumber,Address,_id} = this.props.item
+        await this.setState({Name,Age,Gender,PhoneNumber,Address,id:_id})
+
         // axios.get('http://localhost:4000/business/edit:id/'+this.props.match.params.id)
         // .then(response => {
         //     this.setState({ 
@@ -40,7 +43,8 @@ export default class Edit extends Component {
         // .catch(function (error) {
         //     console.log(error);
         // })
-                
+       
+              
       }
     onChangeName = e =>{
         console.log('Name:',e.target.value);
@@ -63,7 +67,7 @@ export default class Edit extends Component {
         onChangePhoneNumber = e=> {
           console.log('PhoneNumber',e.target.value);
           this.setState({
-            Phone_Number:e.target.value    
+            PhoneNumber:e.target.value    
           });
         }
         onChangeAddress =e =>{
@@ -91,7 +95,7 @@ export default class Edit extends Component {
             visible: false,
           }); 
         }
-        onSubmit=e =>{
+        onSubmit=(e )=>{
             e.preventDefault();
             console.log(`the ${this.state.Name},${this.state.Age},
             ${this.state.Gender},
@@ -102,15 +106,20 @@ export default class Edit extends Component {
               gender:this.state.Gender,
               mobile_no:this.state.PhoneNumber,
               address:this.state.Address,
-              id:this.props.item.id
+             
             };
+            console.log(obj,'new obj')
+            this.props.UpdateAction({obj,id:this.state.id})
             console.log(this.props.item._id,'id')
+            this.props.DisplayData()
             // console.log(this.props.obj,'obj')
-            axios.put('http://localhost:4000/business/update/'+this.props.item._id,{obj})
-             .then(res => console.log(res.data,"update res"));
-             console.log(obj,'obj')
+            // axios.put('http://localhost:4000/business/update/'+this.props.item._id,{obj})
+            //  .then(res => console.log(res.data,"update res"));
+            //  console.log(obj,'obj')
              this.cancelfun(false)
-              }
+             window.location.reload();
+           
+          }
 
  
   render() {
@@ -165,5 +174,8 @@ export default class Edit extends Component {
           },
         };
          
-    
+        const mapStateToProps = (state) => ({
+          sales: state.name.alldata,
+        })
+ export default connect( mapStateToProps, {loginAction,UpdateAction,DisplayData})(Edit)      
         

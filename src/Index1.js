@@ -1,28 +1,40 @@
 import React, { Component } from 'react';
 import axios from 'axios';
+import { Button } from 'antd';
+import Edit from './Edit';
 import TableRow from './TableRow';
+import {connect} from 'react-redux';
+import {DisplayData} from './action/data_act';
+import { DeleteAction} from './action/data_act'
 
-export default class Index1 extends Component {
+
+ class Index1 extends Component {
 
   constructor(props) {
       super(props);
       this.state = {business: []};
     }
     componentDidMount(){
-      axios.get('http://localhost:4000/business')
-        .then(response => {
-          this.setState({ business: response.data });
-        })
-        .catch(function (error) {
-          console.log(error);
-        })
+      this.props.DisplayData()
+      // axios.get('http://localhost:4000/business')
+      //   .then(response => {
+      //     this.setState({ business: response.data });
+      //   })
+      //   .catch(function (error) {
+      //     console.log(error);
+      //   })
     }
-    tabRow(){
-      return this.state.business.map(function(object, i){
-          return <TableRow obj={object} key={i}
-           />;
-      });
+    delete() {
+      this.props.DeleteAction()
     }
+    // tabRow(){
+    //   return this.state.business.map(function(object, i)
+    //   {
+    //       return <TableRow obj={object} key={i}
+    //        />;
+    //   });
+     
+    // }
 
     render() {
       console.log(this.props)
@@ -40,11 +52,20 @@ export default class Index1 extends Component {
                 <th colSpan="2">Action</th>
               </tr>
             </thead>
-            <tbody>
-              { this.tabRow() }
-            </tbody>
+            {/* <tbody> */}
+              {/* { this.tabRow() } */}
+              <TableRow />
+            {/* </tbody> */}
           </table>
         </div>
       );
     }
   }
+
+  const mapStateToProps = (state) => ({
+    sales: state.name.alldata,
+  
+  })
+
+
+  export default connect(mapStateToProps,{DisplayData},) (Index1);

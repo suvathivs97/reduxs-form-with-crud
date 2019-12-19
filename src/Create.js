@@ -1,7 +1,11 @@
 import React, { Component } from 'react';
+import Index1 from './Index1';
 import { Form, Input,Radio,Button } from 'antd';
 
 import axios from 'axios';
+import {loginAction} from './action/data_act';
+import {connect} from 'react-redux'
+
 
 const { TextArea } = Input;
 
@@ -25,42 +29,42 @@ export class Create extends Component {
     }
   }
         onChangeName = e =>{
-          console.log('Name:',e.target.value);
+          // console.log('Name:',e.target.value);
           this.setState({
            Name:e.target.value
            });
           }
           onChangeAge=e =>{
-            console.log('Age:',e.target.value);
+            // console.log('Age:',e.target.value);
             this.setState({
               Age:e.target.value
             });
           }
          onChangeGender = e => {
-           console.log('radio checked', e);
+          //  console.log('radio checked', e);
            this.setState({
                Gender:e.target.value
            });
           }
           onChangePhoneNumber = e=> {
-            console.log('PhoneNumber',e.target.value);
+            // console.log('PhoneNumber',e.target.value);
             this.setState({
               PhoneNumber:e.target.value    
             });
           }
           onChangeAddress =e =>{
-            console.log('Address',e.target.value);
+            // console.log('Address',e.target.value);
             this.setState({
               Address:e.target.value
             });
           }
           handleCancel = e => {
-            console.log(e);
+            // console.log(e);
             this.props.cancelfun(false)
            
           };
            onSubmit=e =>{
-             console.log('inside onsubmit')
+            //  console.log('inside onsubmit')
              e.preventDefault();
              console.log(`the ${this.state.Name},${this.state.Age},
              ${this.state.Gender},
@@ -74,22 +78,24 @@ export class Create extends Component {
                address:this.state.Address
              };
              console.log('obj',obj)
-             axios.post('http://localhost:4000/business/add', {obj})
-             .then(res => console.log(res.data));
-             this.setState({
-              Name:'',
-              Age:'',
-              Gender:'',
-              PhoneNumber:'',
-              Address:''
+             this.props.loginAction({obj})
+            //  axios.post('http://localhost:4000/business/add', {obj})
+            //  .then(res => console.log(res.data));
+            //  this.setState({
+            //   Name:'',
+            //   Age:'',
+            //   Gender:'',
+            //   PhoneNumber:'',
+            //   Address:''
 
-             })
+            //  })
              this.props.cancelfun(false)
              
            }
     render() {
         return (
             <div> 
+              
          <Form.Item {...formItemLayout} label="Name">
               <Input placeholder="Please input your name" 
                value={this.state.Name}
@@ -135,4 +141,13 @@ const formItemLayout = {
 };
  
 Create= Form.create ({name:"register"})(Create)
-export default Create
+
+const mapStateToProps = (state) => ({
+  sales: state.name.alldata,
+})
+
+
+export default connect(mapStateToProps, {
+  loginAction
+})(Create)
+// export default Create
